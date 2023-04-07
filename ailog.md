@@ -1,10 +1,9 @@
-Bing compose in Edge browser:
+# Bing compose in Edge browser:
 
-Prompt: "How to use GPT4 to generate a powershell script"
-Enthusiastic
-Blog post
-Medium
-
+### Prompt: "How to use GPT4 to generate a powershell script"
+- Enthusiastic
+- Blog post
+- Medium
 
 Hello, dear reader! Welcome to my blog, where I share my tips and tricks on how to use GPT-4 to generate a powershell script. If you are not familiar with GPT-4, it is a large multimodal model (accepting image and text inputs, emitting text outputs) that exhibits human-level performance on various professional and academic benchmarks. It can also generate creative and technical writing tasks, such as composing songs, writing screenplays, or learning a user’s writing style.
 
@@ -39,12 +38,13 @@ Of course, this is just one example of what GPT-4 can do. You can try different 
 I hope you enjoyed this blog post and learned something new about GPT-4 and powershell scripting. If you have any questions or feedback, please leave them in the comments section below. Thank you for reading and happy coding!
 
 
-https://chat.openai.com/chat
+# https://chat.openai.com/chat
 
-Prompt: generate a powershell script that takes the files in a folder and randomly re-arranges them in a new order. The script must rename the files and save to a different drive letter
+### Prompt: generate a powershell script that takes the files in a folder and randomly re-arranges them in a new order. The script must rename the files and save to a different drive letter
 
 Sure, here's a PowerShell script that will randomly rearrange the files in a folder and rename them before saving them to a different drive letter:
 
+```
 # Set the source and destination folders
 $sourceFolder = "C:\SourceFolder"
 $destinationFolder = "D:\DestinationFolder"
@@ -62,6 +62,8 @@ for ($i = 0; $i -lt $shuffledFiles.Count; $i++) {
     $destinationPath = Join-Path $destinationFolder $newName
     Copy-Item $file.FullName $destinationPath
 }
+```
+
 Here's what this script does:
 
 It sets the source and destination folders to the appropriate paths.
