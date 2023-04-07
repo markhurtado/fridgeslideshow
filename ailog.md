@@ -71,3 +71,93 @@ It gets a list of all the files in the source folder.
 It shuffles the files randomly using the Get-Random cmdlet.
 It loops through each shuffled file, assigns it a new name (e.g. "File1.txt", "File2.jpg", etc.), and copies it to the destination folder using the Copy-Item cmdlet.
 You can customize this script by changing the source and destination folders, adjusting the filename format, or adding additional steps as needed.
+
+### Prompt: Change the previous script to get the files directly from onedrive as the source
+
+Sure, here's an updated version of the PowerShell script that retrieves the files directly from OneDrive as the source:
+
+```
+# Set the source and destination folders
+$sourceFolder = "$env:USERPROFILE\OneDrive\SourceFolder"
+$destinationFolder = "D:\DestinationFolder"
+
+# Get the list of files in the source folder
+$files = Get-ChildItem $sourceFolder
+
+# Shuffle the files randomly
+$shuffledFiles = $files | Get-Random -Count $files.Count
+
+# Loop through the shuffled files and rename them, then copy them to the destination folder
+for ($i = 0; $i -lt $shuffledFiles.Count; $i++) {
+    $file = $shuffledFiles[$i]
+    $newName = "File" + ($i + 1) + $file.Extension
+    $destinationPath = Join-Path $destinationFolder $newName
+    Copy-Item $file.FullName $destinationPath
+}
+```
+
+Here's what's changed:
+
+The $sourceFolder variable is set to the path of the source folder in OneDrive using the %USERPROFILE% environment variable and the path to the OneDrive folder.
+The Get-ChildItem cmdlet retrieves the list of files in the OneDrive source folder.
+The rest of the script is the same as before - it shuffles the files randomly, renames them, and copies them to the destination folder.
+Note that the script assumes that the OneDrive folder is located in the user's profile directory. If your OneDrive folder is located in a different location, you will need to modify the $sourceFolder variable accordingly.
+
+
+### Prompt: Change the previous script so the source folder can download the files directly from onedrive. assume onedrive is not installed on the computer and the user is not signed in
+
+To download files directly from OneDrive without the OneDrive app or the user being signed in, you can use the Microsoft Graph API to authenticate and download the files. Here's an example PowerShell script that uses the Graph API to download files from OneDrive:
+
+```
+# Define the variables
+$clientId = "<YOUR_APP_CLIENT_ID>"
+$clientSecret = "<YOUR_APP_CLIENT_SECRET>"
+$tenantId = "<YOUR_TENANT_ID>"
+$sourceFolderPath = "/SourceFolder"
+$destinationFolderPath = "D:\DestinationFolder"
+$fileExtensionFilter = "*.*"
+
+# Define the Graph API endpoint and version
+$graphApiEndpoint = "https://graph.microsoft.com"
+$graphApiVersion = "v1.0"
+
+# Get an access token using client credentials
+$tokenEndpoint = "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token"
+$body = @{
+    grant_type = "client_credentials"
+    client_id = $clientId
+    client_secret = $clientSecret
+    scope = "https://graph.microsoft.com/.default"
+}
+$response = Invoke-RestMethod -Uri $tokenEndpoint -Method Post -Body $body
+$accessToken = $response.access_token
+
+# Get the list of files in the source folder using the Graph API
+$url = "$graphApiEndpoint/$graphApiVersion/me/drive/root:$sourceFolderPath:/children?select=id,name"
+$headers = @{
+    Authorization = "Bearer $accessToken"
+}
+$files = Invoke-RestMethod -Uri $url -Headers $headers
+
+# Filter the files by extension
+$files = $files | Where-Object { $_.name -like $fileExtensionFilter }
+
+# Shuffle the files randomly
+$shuffledFiles = $files | Get-Random -Count $files.Count
+
+# Loop through the shuffled files and download them to the destination folder
+foreach ($file in $shuffledFiles) {
+    $downloadUrl = "$graphApiEndpoint/$graphApiVersion/me/drive/items/$($file.id)/content"
+    $destinationPath = Join-Path $destinationFolderPath $file.name
+    Invoke-RestMethod -Uri $downloadUrl -Headers $headers -OutFile $destinationPath
+}
+```
+
+Here's what this script does:
+
+It defines several variables, including the Graph API endpoint, version, and the paths to the source and destination folders.
+It uses the Graph API to obtain an access token using client credentials.
+It uses the Graph API to get the list of files in the source folder, filtering the files by extension.
+It shuffles the files randomly.
+It loops through the shuffled files and downloads them to the destination folder using the Graph API.
+Note that this script assumes you have already registered an Azure AD application and obtained a client ID and secret. You will also need to replace the <YOUR_TENANT_ID> placeholder with your Azure AD tenant ID.
