@@ -29,6 +29,8 @@ TODO: figure out way to transfer to fridge besides USB.
 - Filenames must be new.
 - This script can be run on demand.
 - Output is saved to the root folder of the USB drive. The number of files does not change.
+- All files must have .jpg extension lower case.
+- If there are files named "01.jpg - 24.jpg", copy them over with the same name so they play first.
 
 # Goal:
 
