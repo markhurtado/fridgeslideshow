@@ -19,19 +19,27 @@ TODO: figure out way to transfer to fridge besides USB.
 
 ## Pre-reqs:
 
-- Local folder with .jpg files saved from various sources
+- Folders with .jpg files saved from various sources
 - USB drive for output
-- Powershell
+- PowerShell
 
-## Required output:
+## How to use:
 
-- Randomize the order of files.
-- Filenames must be new.
-- This script can be run on demand.
-- Output is saved to the root folder of the USB drive. The number of files does not change.
-- All files must have .jpg extension lower case.
-- If there are files named "01.jpg - 24.jpg", copy them over with the same name so they play first.
+1. Run `shufflefiles.ps1` in PowerShell
+2. Click "Add folder" to select one or more source folders containing JPG files
+3. Use "Remove selected" or "Clear all" to manage your source list
+4. Click "Browse" to select your USB drive (destination folder)
+5. Optionally check "Include subfolders" to search nested directories
+6. Optionally check "Delete existing JPG files in destination first" to clear the USB before writing
+7. Click "Shuffle and copy to USB" to process and transfer your files
+8. Files named 01.jpg through 24.jpg play first in order; all others are randomized and renamed
 
-# Goal:
+## Output behavior:
 
-Use AI to generate this code. Keep track of prompts and responses in `ailog.txt`
+- Randomizes the order of files
+- Renames files to randomized sequence (File001.jpg, File002.jpg, etc.)
+- Can be run on demand
+- Output is saved to the root folder of the USB drive
+- File count does not change
+- All files have lowercase .jpg extension
+- Files named "01.jpg" through "24.jpg" are preserved with original names and play first
